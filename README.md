@@ -21,3 +21,8 @@
 - User Authentication 
 - Order History
 - Search and Filter
+
+
+### React Snippet
+`rfc` - React Functional Component
+`rcc` - React Class Component
