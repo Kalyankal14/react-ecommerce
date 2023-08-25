@@ -26,3 +26,16 @@
 ### React Snippet
 `rfc` - React Functional Component
 `rcc` - React Class Component
+
+
+### TailwindCSS Installation
+- `npm install -D tailwindcss`
+- `npx tailwindcss init`
+- Update `tailwind.config.js`
+    - `content: ['./src/**/*.js']
+- Include @tailwind in index.css
+    - ```css
+        @tailwind base;
+        @tailwind components;
+        @tailwind utilities;
+    
