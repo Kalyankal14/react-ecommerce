@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
-import { firebaseApp } from '../firebaseApp';
+import React, { useEffect, useState } from 'react'
+import { useUser } from '../contexts/UserProvider';
 
 
 function AuthenticationView({ isLogin }) {
@@ -8,34 +7,32 @@ function AuthenticationView({ isLogin }) {
   const [password, setPassword] = useState('');
   const title = isLogin ? 'Login' : 'Signup';
 
-  const handleAuthentication = (event) => { 
-    const formData = {
-      email,    // email: email
-      password  // password: password
-    }
-    console.log(":: handleAuthentication ::", title, isLogin, formData)
-    event.preventDefault() ;
-    // https://firebase.google.com/docs/auth/web/start?authuser=0&hl=en
-    const auth = getAuth(firebaseApp);
-    if(isLogin) {
-      // Login
-      signInWithEmailAndPassword(auth, email, password)
-        .then(res => console.log(":: LOGIN RESPONSE ::", res))
-    } else {
-      // Signup
-      
-      createUserWithEmailAndPassword(auth, email, password)
-      .then(res => console.log(":: SIGNUP RESPONSE ::", res))
-        .catch(error => console.log(error))
-    }
+  const { doLogin, doSignup, error, clearErrors } = useUser()
 
+  const handleAuthentication = (event) => { 
+    event.preventDefault() ;
+    console.log(":: handleAuthentication ::", { doLogin, doSignup, error });
+    (isLogin ? doLogin : doSignup)(email, password);
+    /*
+    if(isLogin) {
+      doLogin(email, password);
+    } else {
+      doSignup(email, password);
+    }
+    */
   };
+
+  useEffect(() => {}, []); // componentDidMount (invoke only once after mounted)
+
+  useEffect(() => {
+   clearErrors();
+  }, [isLogin]); // Work has componentDidUpdate (invoke whenever isLogin prop change)
 
 
   return (
     <form onSubmit={handleAuthentication}>
       <h2>{title}</h2>
-
+      {error && <div className='text-red-500 p-2 m-2'>{error}</div>}
       <input 
         type="email"
         placeholder='Email'
