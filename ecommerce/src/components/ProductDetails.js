@@ -6,8 +6,9 @@ export default function ProductDetails({match, ...props}) {
   const { params } = match;
   const { id } = params;
 
-  const { products, addProductToCart } = useAppContext();
-  const product = products.find(prod => prod.id == id);
+  const { productsById, addProductToCart, cartProducts } = useAppContext();
+  const product = productsById[id];
+  const cartProductInfo = cartProducts[id]
 
   if(!product) return <h1>No Product Found....</h1>
 
@@ -24,7 +25,7 @@ export default function ProductDetails({match, ...props}) {
         <div className='flex gap-4 '>
           <img src={productMainImage} alt={title} className='w-1/3 rounded-lg transition-shadow' />
           <div className='w-2/3'>
-            <h2 className='text-2xl font-semibold'>{title}</h2>
+            <h2 className='text-2xl font-semibold'>{title} | { cartProductInfo ? cartProductInfo.quantity : 0   }</h2>
             <p className='mt-2 text-gray-700'>{description}</p>
             <p className='mt-4 text-2xl'>₹{price}/-</p>
             <UIButton onClick={addToCart}>Add to cart</UIButton>

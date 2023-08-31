@@ -8,7 +8,6 @@ export const AppContext = createContext({
 
 function AppProvider({ children }) {
   const [products, setProducts] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
   const [cartProducts, setCartProduct] = useState({});
   /*
     {
@@ -28,17 +27,6 @@ function AppProvider({ children }) {
   }, []);
 
   const addProductToCart = (product) => {
-    let addedProduct = cartItems.find(cartProduct => cartProduct.id == product.id);
-    if(!addedProduct) {
-      addedProduct = product;
-      addedProduct.quantity = 1;
-    } else {
-      addedProduct.quantity++; // product.quantity = product.quantity + 1;
-    };
-    const filterProducts = cartItems.filter(cartProduct => cartProduct.id != product.id)
-    setCartItems([...filterProducts, addedProduct]);
-
-
     let cartProduct = cartProducts[product.id];
     if(!cartProduct) {
       cartProduct = product;
@@ -46,18 +34,34 @@ function AppProvider({ children }) {
     } else {
       cartProduct.quantity++;
     }
+    cartProduct.totalPrice = cartProduct.quantity * cartProduct.price;
     setCartProduct({...cartProducts, [product.id]: cartProduct});
 
   }
 
+  const productsById = {};
+  products.forEach((product) => {
+    productsById[product.id] = product;
+  });
+
+  const allCartProducts = Object.values(cartProducts);
+  const cartCount = allCartProducts.length;
+  let totalCartAmount = 0;
+  allCartProducts.forEach(product => {
+    totalCartAmount = totalCartAmount + product.totalPrice
+  });
+
   return (
     <AppContext.Provider value={{
         products,
+        productsById,
         loading,
         setLoading,
-        cartItems,    // [{id: 1}, {id: 2}]
+        cartCount,
         cartProducts, // {1: {id: 1}, 2: {id: 2}}
-        addProductToCart
+        addProductToCart,
+        allCartProducts,
+        totalCartAmount
     }}>
         {children}
     </AppContext.Provider>

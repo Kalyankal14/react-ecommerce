@@ -1,54 +1,21 @@
 import React, { Component } from 'react'
 import { AppContext } from "../contexts/AppProvider"
+import UIButton from './UIButton';
+import CartItem from './CartItem';
 
 export class CartDetails extends Component {
   render() {
     return (
       <section className='container mx-auto py-4'>
-        <h2>Cart Items</h2>
+        <h2 className='text-2xl font-semibold mb-4'>Cart Details</h2>
         <AppContext.Consumer>
-            {({cartItems, cartProducts}) => <table>
-                   <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Per Price</th>
-                        <th>Total Price</th>
-                    </tr>
-                   </thead>
-                   <tbody>
-                    {cartItems.map(item => <tr key={item.id}>
-                        <td>{item.title}</td>
-                        <td>{item.quantity}</td>
-                        <td>{item.price}</td>
-                        <td>{item.quantity * item.price}</td>
-                    </tr>)}
-                   </tbody>
-            </table>}
-        </AppContext.Consumer>
-        
-        <hr />
-
-        <h2>Cart Items</h2>
-        <AppContext.Consumer>
-            {({cartProducts}) => <table>
-                   <thead>
-                    <tr>
-                        <th>Product Name</th>
-                        <th>Quantity</th>
-                        <th>Per Price</th>
-                        <th>Total Price</th>
-                    </tr>
-                   </thead>
-                   <tbody>
-                    {Object.values(cartProducts).map(item => <tr key={item.id}>
-                        <td>{item.title}</td>
-                        <td>{item.quantity}</td>
-                        <td>{item.price}</td>
-                        <td>{item.quantity * item.price}</td>
-                    </tr>)}
-                   </tbody>
-            </table>}
+            {({allCartProducts, totalCartAmount}) => {
+              return allCartProducts.length > 0 ? <div>
+                {allCartProducts.map((product) => <CartItem product={product}/>)}
+                <h3 className='text-lg font-semibold mt-4'>Total Price: {totalCartAmount}</h3>
+                <UIButton>Proceed to checkout</UIButton>
+              </div> : <p>Your cart is empty..</p>
+            }}
         </AppContext.Consumer>
       </section>
     )
