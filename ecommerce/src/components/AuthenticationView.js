@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory, Redirect } from 'react-router-dom'
 import { useUser } from '../contexts/UserProvider';
 import UITextField from './UITextField';
 import UIButton from './UIButton';
@@ -8,20 +9,14 @@ function AuthenticationView({ isLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const title = isLogin ? 'Login' : 'Signup';
+  const history = useHistory();
 
-  const { doLogin, doSignup, error, clearErrors } = useUser()
+  const { doLogin, doSignup, error, clearErrors, user } = useUser()
 
   const handleAuthentication = (event) => { 
     event.preventDefault() ;
     console.log(":: handleAuthentication ::", { doLogin, doSignup, error });
     (isLogin ? doLogin : doSignup)(email, password);
-    /*
-    if(isLogin) {
-      doLogin(email, password);
-    } else {
-      doSignup(email, password);
-    }
-    */
   };
 
   useEffect(() => {}, []); // componentDidMount (invoke only once after mounted)
@@ -30,6 +25,15 @@ function AuthenticationView({ isLogin }) {
    clearErrors();
   }, [isLogin]); // Work has componentDidUpdate (invoke whenever isLogin prop change)
 
+  /*
+  useEffect(() => {
+    if(user) {
+      history.push('/')
+    }
+  }, [user])
+  */
+
+ if(user) return <Redirect to="/" />
 
   return (
     <form onSubmit={handleAuthentication} className='bg-slate-100 rounded shadow max-w-xs mx-auto mt-5'>

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom'
 import { 
     getAuth, 
     createUserWithEmailAndPassword, 
@@ -18,12 +19,22 @@ const FIREBASE_AUTH_ERRORS = {
 const UserContext = createContext({
     user: null,
     error: null
-})
+});
+
+const APP_USER = "APP_USER";
 
 function UserProvider({children}) {
-    const [user, setUser] = useState(null);
+    const localUser = localStorage.getItem(APP_USER); 
+    const [user, setUser] = useState(localUser ? JSON.parse(localUser) : null);
     const [error, setError] = useState(null);
     const auth = getAuth(firebaseApp);
+    const history = useHistory(); 
+
+    const saveUser = user => {
+        localStorage.setItem(APP_USER, JSON.stringify(user));
+        setUser(user);
+        history.push('/products');
+    }
 
     // doLogin(email = 'teja@gmail.com', password = '123456')
     const doLogin = (email, password) => {
@@ -34,7 +45,7 @@ function UserProvider({children}) {
             password
         ).then(res => {
             console.log(":: DO LOGIN :: SUCCESS", res)
-            setUser(res.user);
+            saveUser(res.user);
         }).catch(error => {
             var message = FIREBASE_AUTH_ERRORS[error.code];
             console.log(":: DO LOGIN :: FAILURE", error.code, message);
@@ -50,7 +61,7 @@ function UserProvider({children}) {
             password
         ).then(res => {
             console.log(":: DO SINGUP :: SUCCESS", res)
-            setUser(res.user);
+            saveUser(res.user);
         }).catch(error => {
             var message = FIREBASE_AUTH_ERRORS[error.code];
             setError(message);
