@@ -39,3 +39,13 @@
         @tailwind components;
         @tailwind utilities;
     
+
+## Committing Changes to GITHUB Origin (remote)
+1. Move changed files to Staging Area
+    ```git add .```
+    
+    ```git add <FILENAME_WITH_FULLPATH>```
+2. Commit with Message
+    ```git commit -m "COMMIT MESSAGE"```
+3. Publish the changes to ORIGIN (remote)
+    ```git push```
