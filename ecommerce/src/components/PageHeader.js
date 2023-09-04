@@ -10,7 +10,7 @@ function PageHeader() {
   return (
     <header className='bg-yellow-400 flex justify-between p-3'>
         <PageLink to="/">
-            Ecommerce App
+            React Ecommerce
         </PageLink>
 
         <nav className='flex gap-3'>
