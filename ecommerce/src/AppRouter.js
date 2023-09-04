@@ -6,6 +6,7 @@ import ProductDetails from './components/ProductDetails'
 import AuthenticationView from './components/AuthenticationView'
 import Logout from './components/Logout'
 import CartDetails from './components/CartDetails'
+import Checkout from './components/Checkout'
 
 export default function AppRouter({children}) {
     return <Switch>
@@ -15,7 +16,8 @@ export default function AppRouter({children}) {
         <Route exact path="/products" component={ProductsList} />
         <Route path="/products/:id" component={ProductDetails} />
         <Route path="/logout" component={Logout} />
-        <Route path="/cart" component={CartDetails} />
+        <Route path="/cart" component={CartDetails} /> 
+        <Route path="/checkout" component={Checkout} />
         
 
     </Switch>
