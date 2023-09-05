@@ -15,7 +15,10 @@ function PageHeader() {
 
         <nav className='flex gap-3'>
             <PageLink to="/products">Products</PageLink>
-            {user ? <div>{user.email} <PageLink to="/logout">Logout</PageLink></div> : <>
+            {user ? <>
+              <div>{user.email} <PageLink to="/logout">Logout</PageLink></div>
+              <PageLink to="/history">Orders</PageLink>
+            </> : <>
               <PageLink to="/login">Login</PageLink>
               <PageLink to="/signup">Signup</PageLink>
             </>}
