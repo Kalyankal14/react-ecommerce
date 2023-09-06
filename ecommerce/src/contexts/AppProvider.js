@@ -47,6 +47,10 @@ function AppProvider({ children }) {
     localStorage.setItem(CART_PRODUCTS, JSON.stringify(cartProducts));
   }, [cartProducts])
 
+  const clearCart = () => {
+    setCartProduct({});
+  }
+
   const productsById = {};
   products.forEach((product) => {
     productsById[product.id] = product;
@@ -67,6 +71,7 @@ function AppProvider({ children }) {
         setLoading,
         cartCount,
         cartProducts, // {1: {id: 1}, 2: {id: 2}}
+        clearCart,
         addProductToCart,
         allCartProducts,
         totalCartAmount
