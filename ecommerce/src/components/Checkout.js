@@ -24,7 +24,7 @@ export default function Checkout() {
                 quantity: product.quantity,
                 title: product.title,
                 price: product.price,
-                totalPrice: product.totalPrice,
+                totalPrice: product.totalPrice, 
             }
         })
 
