@@ -6,9 +6,14 @@ export const AppContext = createContext({
     loading: true
 })
 
+const CART_PRODUCTS = "CART_PRODUCTS"; 
+const localCartItems = localStorage.getItem(CART_PRODUCTS);
+const parseLocalCartItems = JSON.parse(localCartItems ? localCartItems : "{}")
+
+
 function AppProvider({ children }) {
   const [products, setProducts] = useState([]);
-  const [cartProducts, setCartProduct] = useState({});
+  const [cartProducts, setCartProduct] = useState(parseLocalCartItems);
   /*
     {
       5: PRODUCT_5
@@ -36,7 +41,14 @@ function AppProvider({ children }) {
     }
     cartProduct.totalPrice = cartProduct.quantity * cartProduct.price;
     setCartProduct({...cartProducts, [product.id]: cartProduct});
+  }
 
+  useEffect(() => {
+    localStorage.setItem(CART_PRODUCTS, JSON.stringify(cartProducts));
+  }, [cartProducts])
+
+  const clearCart = () => {
+    setCartProduct({});
   }
 
   const productsById = {};
@@ -59,6 +71,7 @@ function AppProvider({ children }) {
         setLoading,
         cartCount,
         cartProducts, // {1: {id: 1}, 2: {id: 2}}
+        clearCart,
         addProductToCart,
         allCartProducts,
         totalCartAmount
